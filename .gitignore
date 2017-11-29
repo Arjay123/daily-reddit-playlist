@@ -99,3 +99,17 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# Vagrant
+.vagrant
+node_modules/
+thumbnails/
+media/
+migrations/
+.DS_Store
+static
+*webpack-stats.json
+prod_secrets.py
+.vscode
+assets/
+secret_key.py

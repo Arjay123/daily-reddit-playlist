@@ -1,0 +1,37 @@
+html,
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+#container {
+    width: 100%;
+    height: 100%;
+}
+
+.content {
+    margin: 0 10px;
+}
+
+.hdr {
+    background-color: gray;
+    text-align: center;
+    padding: 40px;
+}
+
+.person {
+    text-align: center;
+    border: 1px solid black;
+    margin: 5px;
+}
+
+.people {
+    display: flex;
+    flex-direction: row;
+}
+
+.error {
+    color: red;
+}
+
+
