@@ -17,6 +17,7 @@ module.exports = merge(baseConfig, {
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
+            "window.jQuery": "jquery"
         }),
         new webpack.DefinePlugin({
             'API_URL': JSON.stringify("http://localhost:8001/api/")

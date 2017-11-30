@@ -1,75 +1,58 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 import css from './index.css';
+import $ from 'jquery';
+import 'velocity-animate';
 
 const urlBase = API_URL;
-
-class People extends React.Component {
-
-    constructor(props){
-        super(props);
-        this.state = {
-            data: [{"test": "test"}]
-        }
-    }
-
-    load() {
-        $.ajax({
-            url: API_URL + "persons",
-            datatype: 'json',
-            cache: false,
-            success: function(data) {
-                this.setState({data: data.results});
-                console.log(data)
-            }.bind(this),
-            error: function(error){
-                this.setState({data: []})
-                console.log("error")
-            }.bind(this)
-        })
-    }
-
-    componentDidMount() {
-        this.load();
-    }
-
-    render() {
-
-        var data_render = <p className="error">Error: data not loaded</p>
-        if(this.state.data){
-            data_render = this.state.data.map((i, j) =>
-                <Person key={j} name={i.name} game={i.fav_game} age={i.age} />
-            );
-        }
-
-        return (
-            <div className="people">
-                {data_render}
-            </div>
-        )
-    }
-}
-
-class Person extends React.Component {
-    render(){
-        return(
-            <div className="person">
-                <h3>{this.props.name}</h3>
-                <h4>Age {this.props.age}</h4>
-                <p>Favorite Game: {this.props.game}</p>
-            </div>
-        )
-    }
-}
 
 class App extends React.Component {
     render() {
         return(
             <div className="app">
-                <Header />
-                <div className="content">
-                    <h1>Data from API call</h1>
-                    <People />
+                <PlayerPanel />
+            </div>
+        )
+    }
+}
+
+class PlayerPanel extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handleClick = this.handleClick.bind(this);
+        this.changeValue = this.changeValue.bind(this);
+        this.state = {
+            value: "Playlist 1"
+        }
+    }
+
+    handleClick() {
+        $('#foo').velocity({ "left": "-=275px" }, {
+            "duration": "fast",
+            "complete": this.changeValue
+        });
+        console.log("hi");
+    }
+
+    changeValue(){
+        console.log($('#foo').css('left'));
+        $('#foo').css({
+            'left': '+=550px'
+        })
+        this.setState({
+            value: "Playlist 2"
+        });
+
+        $('#foo').velocity({ "left": "-=275px" }, "fast");
+    }
+
+    render() {
+        return(
+            <div className="player-panel">
+                <div onClick={this.handleClick} id='foo' className="player-panel-content">
+                    <h2>{this.state.value}</h2>
+                    <iframe src="https://open.spotify.com/embed?uri=spotify:user:spotify:playlist:3rgsDhGHZxZ9sB9DQWQfuf" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
                 </div>
             </div>
         )
@@ -77,14 +60,4 @@ class App extends React.Component {
 }
 
 
-class Header extends React.Component {
-    render() {
-        return(
-            <header className="hdr">
-                <h1>django-react-playground</h1>
-            </header>
-        )
-    }
-}
-
-ReactDOM.render(<App />, document.getElementById('container'))
+ReactDOM.render(<App />, document.getElementById('main'))
