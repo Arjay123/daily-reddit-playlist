@@ -31,6 +31,7 @@ TODO
 * [Django](https://www.djangoproject.com/)
 * [React](https://reactjs.org/)
 * [SpotifyAPI](https://developer.spotify.com/web-api/)
+* [RedditAPI](https://developer.spotify.com/web-api/)
 
 ## Contributing
 
@@ -45,3 +46,9 @@ TODO
 
 TODO
 
+
+## TODO
+
+- Python script to parse previous day's song submissions
+- Connect to spotify to get playlist info
+- UI/UX Improvements
