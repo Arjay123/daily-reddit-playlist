@@ -20,7 +20,8 @@ module.exports = merge(baseConfig, {
             "window.jQuery": "jquery"
         }),
         new webpack.DefinePlugin({
-            'API_URL': JSON.stringify("http://localhost:8001/api/")
+            'API_URL': JSON.stringify("http://localhost:8001/api/"),
+            'USER_ID': JSON.stringify("1214623406")
         })
     ],
     output: {

@@ -5,6 +5,7 @@ import $ from 'jquery';
 import 'velocity-animate';
 
 const urlBase = API_URL;
+const userID = USER_ID;
 
 class App extends React.Component {
     render() {
@@ -23,7 +24,9 @@ class PlayerPanel extends React.Component {
         this.handleClick = this.handleClick.bind(this);
         this.changeValue = this.changeValue.bind(this);
         this.state = {
-            value: "Playlist 1"
+            value: "Playlist 1",
+            playlistIndex: 0,
+            playlists: ["2C3dph3uefzWsFyY033fX9", "3bbn3u9hTsq7JZ8jzatJt6", "3ttgNUPgUQy9BLaOruFGpT"]
         }
     }
 
@@ -32,27 +35,30 @@ class PlayerPanel extends React.Component {
             "duration": "fast",
             "complete": this.changeValue
         });
-        console.log("hi");
     }
 
     changeValue(){
-        console.log($('#foo').css('left'));
         $('#foo').css({
             'left': '+=550px'
         })
+
+        var newIndex = this.state.playlistIndex < this.state.playlists.length-1 ? this.state.playlistIndex+1 : 0;
+
         this.setState({
-            value: "Playlist 2"
+            playlistIndex: newIndex
         });
 
         $('#foo').velocity({ "left": "-=275px" }, "fast");
     }
 
     render() {
+        var playlistSrc = "https://open.spotify.com/embed?uri=spotify:user:" + userID + ":playlist:" + this.state.playlists[this.state.playlistIndex];
+        var frame = <iframe src={playlistSrc} width="300" height="380" frameborder="0" allowtransparency="true"></iframe>;
         return(
             <div className="player-panel">
                 <div onClick={this.handleClick} id='foo' className="player-panel-content">
                     <h2>{this.state.value}</h2>
-                    <iframe src="https://open.spotify.com/embed?uri=spotify:user:spotify:playlist:3rgsDhGHZxZ9sB9DQWQfuf" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+                    {frame}
                 </div>
             </div>
         )
