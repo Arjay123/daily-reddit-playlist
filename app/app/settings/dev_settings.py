@@ -5,13 +5,13 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sample_db_dev',
-        'USER': 'sample_db_dev_user',
+        'NAME': 'dailyredditplaylist',
+        'USER': 'dailyredditplaylistuser',
         'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '',
         'TEST': {
-            'NAME': 'sample_db_dev_test',
+            'NAME': 'dailyredditplaylisttest',
         }
     }
 }
