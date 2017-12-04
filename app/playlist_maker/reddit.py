@@ -1,10 +1,11 @@
 import praw
+import time
 from datetime import date
 from datetime import timedelta
 
-from reddit_secrets import PASSWORD
-from reddit_secrets import CLIENT_SECRET
-from reddit_secrets import CLIENT_ID
+from playlist_maker.reddit_secrets import PASSWORD
+from playlist_maker.reddit_secrets import CLIENT_SECRET
+from playlist_maker.reddit_secrets import CLIENT_ID
 
 
 SUBREDDITS = ['hiphopheads']
@@ -39,11 +40,13 @@ def get_unix_timestamps_prev_day():
     """
     Returns start and end UNIX timestamps for the previous day
     """
-    # yesterday = date.today() - timedelta(1)
+    today = date.today()
+    yesterday = today + timedelta(days=-1)
 
-    # # UNIX Timestamp
-    # time.mktime(yesterday.timetuple())
-    pass
+    yesterday_start_timestamp = time.mktime(yesterday.timetuple())
+    yesterday_end_timestamp = time.mktime(today.timetuple()) - 1
+
+    return yesterday_start_timestamp, yesterday_end_timestamp
 
 
 def filter_song_and_artist(sub_title):
