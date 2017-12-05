@@ -112,5 +112,5 @@ static
 prod_secrets.py
 .vscode
 assets/
-secret_key.py
-reddit_secrets.py
+
+*secret*.py
