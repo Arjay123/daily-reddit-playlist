@@ -10,7 +10,7 @@ def get_credentials():
     """
     Returns spotify credentials
     """
-    return Credential.objects.filter(service=SPOTIFY)
+    return Credential.objects.filter(service=SPOTIFY)[0]
 
 
 def refresh_access_token(credentials):
@@ -31,7 +31,7 @@ def refresh_access_token(credentials):
 
     # If status == 200, save new access token, else throw error
     if response.status_code == requests.codes.ok:
-        credentials.access_token = esponse.json()['access_token']
+        credentials.access_token = response.json()['access_token']
         credentials.full_clean()
         credentials.save()
     else:
@@ -72,7 +72,17 @@ def create_playlist(spotify, playlist_name, credentials):
 
     TODO - Check if playlist w/ same name exists before creation
     """
-    user_id = credentials.account_id
-    result = spotify.user_playlist_create(user_id, playlist_name)
+    result = spotify.user_playlist_create(credentials.account_id,
+                                          playlist_name)
 
     return result['id']
+
+
+def get_playlist(spotify, playlist_name, credentials):
+    """
+    Returns playlist id if exists, else None
+    """
+    playlists = spotify.user_playlists(credentials.account_id)
+    for playlist in playlists['items']:
+        if playlist['name'] == playlist_name:
+            return playlist['id']
