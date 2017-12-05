@@ -1,7 +1,19 @@
 import requests
 import spotipy
 
-def refresh_access_token(refresh_token, client_id, client_secret):
+from playlist_maker.models import Credential
+
+SPOTIFY = 'Spotify'
+
+
+def get_credentials():
+    """
+    Returns spotify credentials
+    """
+    return Credential.objects.filter(service=SPOTIFY)
+
+
+def refresh_access_token(credentials):
     """
     Takes in spotify refresh token and returns new access token
 
@@ -9,29 +21,31 @@ def refresh_access_token(refresh_token, client_id, client_secret):
     """
     data = {
         'grant_type': 'refresh_token',
-        'refresh_token': refresh_token,
-        'client_id': client_id,
-        'client_secret': client_secret
+        'refresh_token': credentials.refresh_token,
+        'client_id': credentials.client_id,
+        'client_secret': credentials.client_secret
     }
 
     response = requests.post('https://accounts.spotify.com/api/token',
                              data=data)
 
-    # If status == 200, return access token, else throw error
+    # If status == 200, save new access token, else throw error
     if response.status_code == requests.codes.ok:
-        return response.json()['access_token']
+        credentials.access_token = esponse.json()['access_token']
+        credentials.full_clean()
+        credentials.save()
     else:
         print response.content
 
 
-def create_spotify_instance(access_token):
+def create_spotify_instance(credentials):
     """
     Returns Spotify instance using access_token
 
     TODO - Better error handling, maybe use logger
     """
     try:
-        spotify_instance = spotipy.Spotify(auth=access_token)
+        spotify_instance = spotipy.Spotify(auth=credentials.access_token)
         spotify_instance.current_user()
         return spotify_instance
     except spotipy.client.SpotifyException:
@@ -51,21 +65,14 @@ def search_track(spotify, artist, trackname):
         return result['tracks']['items'][0]['id']
 
 
-def create_playlist(spotify, playlist_name):
+def create_playlist(spotify, playlist_name, credentials):
     """
     Creates playlist using playlist_name as the title, returns
     id of created playlist
 
     TODO - Check if playlist w/ same name exists before creation
     """
-    user_id = get_user_id(spotify)
+    user_id = credentials.account_id
     result = spotify.user_playlist_create(user_id, playlist_name)
 
     return result['id']
-
-
-def get_user_id(spotify):
-    """
-    Returns user id of Client's spotify account
-    """
-    return spotify.current_user()['id']

@@ -27,4 +27,5 @@ class Credential(models.Model):
     client_secret = models.CharField(max_length=255)
     account_username = models.CharField(max_length=255)
     account_password = models.CharField(max_length=255)
+    account_id = models.CharField(max_length=255)
     service = models.CharField(max_length=30)
