@@ -40,10 +40,32 @@ def create_spotify_instance(access_token):
 
 def search_track(spotify, artist, trackname):
     """
+    Queries spotify for track using artist and trackname
+
+    TODO - Add checks to match artist and trackname
     """
     query = artist + ' - ' + trackname
     result = spotify.search(query)
 
     if result['tracks']['total'] > 0:
-        # TODO - Add checks to match artist and trackname
         return result['tracks']['items'][0]['id']
+
+
+def create_playlist(spotify, playlist_name):
+    """
+    Creates playlist using playlist_name as the title, returns
+    id of created playlist
+
+    TODO - Check if playlist w/ same name exists before creation
+    """
+    user_id = get_user_id(spotify)
+    result = spotify.user_playlist_create(user_id, playlist_name)
+
+    return result['id']
+
+
+def get_user_id(spotify):
+    """
+    Returns user id of Client's spotify account
+    """
+    return spotify.current_user()['id']
